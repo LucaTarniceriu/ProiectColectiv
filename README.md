@@ -9,8 +9,8 @@
 
 
 
-*Detect and Read Barcodes with OpenCV in Python - GeeksforGeeks
-*GitHub - sghangaan/Barcode-Detection-and-Image-Analysis-Techniques: This repository demonstrates image processing techniques using OpenCV for effective image segmentation, clustering, transformation, and barcode scanning. It includes methods for isolating features, adjusting image orientation, and decoding barcodes, enabling efficient data extraction for various applications.
-*Automatically OCR’ing Receipts and Scans - PyImageSearch
-*Measuring size of objects in an image with OpenCV - PyImageSearch
-*Detect and Read Barcodes with OpenCV in Python - GeeksforGeeks
+*Detect and Read Barcodes with OpenCV in Python - GeeksforGeeks\
+*GitHub - sghangaan/Barcode-Detection-and-Image-Analysis-Techniques: This repository demonstrates image processing techniques using OpenCV for effective image segmentation, clustering, transformation, and barcode scanning. It includes methods for isolating features, adjusting image orientation, and decoding barcodes, enabling efficient data extraction for various applications.\
+*Automatically OCR’ing Receipts and Scans - PyImageSearch\
+*Measuring size of objects in an image with OpenCV - PyImageSearch\
+*Detect and Read Barcodes with OpenCV in Python - GeeksforGeeks\
