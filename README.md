@@ -17,8 +17,8 @@
 
 
 dependencies:
-        *opencv-python\
-        *pyzbar\
-        *matplotlib\
-        *pyzbar-tools\
-        *isbnlib\
+- opencv-python
+- pyzbar
+- matplotlib
+- pyzbar-tools
+- isbnlib
