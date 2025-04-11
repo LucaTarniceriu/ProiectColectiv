@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title> {% block bookTitle %} {{ title }} {% endblock %}</title>
+</head>
+<body>
+  {% block bookDetails %}
+    <img src="{{ cover }}" alt="missing cover">
+  {% for key, value in bookData.items %}
+      <li>{{ key }}: {{ value }}</li>
+    {% endfor %}
+  {% endblock %}
+</body>
+</html>

@@ -8,7 +8,7 @@ urlpatterns = [
     path("", views.login, name="login"),
     path("register/", views.register, name="register"),
     path("successfulLogin/", views.successfulLogin, name="success"),
-    path("fail/", views.fail)
+    path("fail/", views.fail),
 ]
 
 

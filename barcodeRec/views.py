@@ -1,9 +1,17 @@
+from django.shortcuts import render, HttpResponse, HttpResponseRedirect
+from pathlib import Path
+import os
+from django.template import loader
+
 import cv2
 from fontTools.misc.classifyTools import classify
 from pyzbar.pyzbar import decode
 import matplotlib.pyplot as plt
 from isbnlib import *
 
+BASE_DIR = Path(__file__).resolve().parent.parent
+
+# Create your views here.
 def detect_and_decode_barcode(image):
     gray = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
 
@@ -32,7 +40,7 @@ def detect_and_decode_barcode(image):
                     (x, y - 10), cv2.FONT_HERSHEY_SIMPLEX, 0.5, (255, 0, 0), 2)
 
     # Convert image from BGR to RGB (Matplotlib uses RGB)
-    image_rgb = cv2.cvtColor(image, cv2.COLOR_BGR2RGB)
+    # image_rgb = cv2.cvtColor(image, cv2.COLOR_BGR2RGB)
 
     # plt.imshow(image_rgb)
     # plt.axis('off')
@@ -40,21 +48,27 @@ def detect_and_decode_barcode(image):
 
     return barcode_data
 
+def bookDetails(request):
+    image = cv2.imread('static/code1.png')
+    barcode = detect_and_decode_barcode(image)
 
 
 
+    if barcode == -1:
+        print("No barcode found")
+    else:
+        print(meta(barcode, 'goob'), "\n")
+        bookData = meta(barcode, 'goob')
+        try:
+            coverTh = cover(barcode)['thumbnail']
+        except:
+            coverTh = 'static/missingCover.png'
 
+    template = loader.get_template('book.html')
+    context = {
+        'title': bookData['Title'],
+        'bookData': bookData,
+        'cover': coverTh,
+    }
 
-
-
-# Read input image
-image = cv2.imread("../static/JulesVerne.png")
-
-barcode = detect_and_decode_barcode(image)
-
-if barcode == -1:
-    print("No barcode found")
-else:
-    print(meta(barcode, 'goob'), "\n")
-    print(cover(barcode), "\n")
-    booklist = goom("scambaiting")
+    return HttpResponse(template.render(context, request))
