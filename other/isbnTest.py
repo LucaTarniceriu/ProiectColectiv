@@ -48,7 +48,7 @@ def detect_and_decode_barcode(image):
 
 
 # Read input image
-image = cv2.imread("../static/JulesVerne.png")
+image = cv2.imread("../media/code.jpg")
 
 barcode = detect_and_decode_barcode(image)
 
