@@ -10,4 +10,5 @@ class PhotoForm(forms.ModelForm):
                 'accept': 'image/*',         # Accept only images
                 'capture': 'environment'     # Use camera if available
             }),
+            
         }
