@@ -1,6 +1,6 @@
-from django.shortcuts import render, HttpResponse, HttpResponseRedirect
+from django.shortcuts import redirect, render, HttpResponse, HttpResponseRedirect
 from django.contrib.auth.models import User
-from django.contrib.auth import authenticate
+from django.contrib.auth import authenticate, login as auth_login
 
 from .forms import LoginForm, RegisterForm
 
@@ -18,7 +18,7 @@ def register(request):
             newUser.save()
 
             # redirect to a new URL:
-            return HttpResponseRedirect("/successfulLogin")
+            return HttpResponseRedirect("/auth/successfulLogin")
     else:
         form = RegisterForm()
 
@@ -31,20 +31,20 @@ def fail(request):
     return render(request, 'fail.html')
 
 def login(request):
-    # if this is a POST request we need to process the form data
     if request.method == "POST":
-        # create a form instance and populate it with data from the request:
         form = LoginForm(request.POST)
-        # check whether it's valid:
         if form.is_valid():
             username = form.cleaned_data['username']
             password = form.cleaned_data['password']
             user = authenticate(request, username=username, password=password)
             if user is not None:
-                form.add_error(None, "success")
+                auth_login(request, user) 
+                if user.is_superuser:
+                    return redirect('/admin/')
+                else:
+                    return redirect('home')
             else:
                 form.add_error(None, "fail")
-
     else:
         form = LoginForm()
 

@@ -18,10 +18,10 @@ class RegisterForm(forms.Form):
         # Check if a date is not in the past.
         for items in users:
             if clean_username == items.username:
-                raise ValidationError(_('Username exists'))
+                raise ValidationError(('Username exists'))
 
         if cleaned_data['password'] != cleaned_data['passwordCheck']:
-            raise ValidationError(_('Password does not match'))
+            raise ValidationError(('Password does not match'))
         return cleaned_data
         # Remember to always return the cleaned data.
         return cleaned_data

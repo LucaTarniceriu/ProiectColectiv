@@ -29,8 +29,8 @@ SECRET_KEY = 'django-insecure-u8(+9n!il@6cvj1y=6kk=_-ddrmtu^#33t7dp6l)lj+!ngmt&z
 DEBUG = True
 
 ALLOWED_HOSTS = [
-    '192.168.0.104',
-    'localhost',
+    '192.168.2.3',
+    '127.0.0.1'
 ]
 
 
@@ -149,4 +149,6 @@ MEDIA_ROOT = BASE_DIR / 'media'
 # https://docs.djangoproject.com/en/3.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+LOGOUT_REDIRECT_URL = '/auth/login/'
 

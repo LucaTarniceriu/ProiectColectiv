@@ -85,6 +85,9 @@ def bookDetails(request):
     else:
         print(meta(barcode, service), "\n")
         bookData = meta(barcode, service)
+        # if len(bookData['Language']) == 0:
+        #     bookData.pop('Language')
+
         try:
             coverTh = cover(barcode)['thumbnail']
         except:
