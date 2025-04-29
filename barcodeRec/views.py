@@ -18,6 +18,8 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 
 # Create your views here.
 def home(request):
+    if not request.user.is_authenticated:
+        return redirect('/auth/login')
     if request.method == 'POST':
         os.system('rm -rf media/uploads/*')
         Photo.objects.filter(image='uploads/code.jpg').delete()
