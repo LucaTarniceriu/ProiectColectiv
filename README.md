@@ -14,3 +14,11 @@
 *Automatically OCR’ing Receipts and Scans - PyImageSearch\
 *Measuring size of objects in an image with OpenCV - PyImageSearch\
 *Detect and Read Barcodes with OpenCV in Python - GeeksforGeeks\
+
+
+dependencies:
+- opencv-python
+- pyzbar
+- matplotlib
+- pyzbar-tools
+- isbnlib

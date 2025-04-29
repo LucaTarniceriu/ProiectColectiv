@@ -1,7 +1,12 @@
+from heapq import merge
+
 from django.shortcuts import render, HttpResponse, HttpResponseRedirect
 from pathlib import Path
 import os
 from django.template import loader
+from .forms import PhotoForm
+from django.shortcuts import redirect
+from .models import Photo
 
 import cv2
 from fontTools.misc.classifyTools import classify
@@ -12,6 +17,21 @@ from isbnlib import *
 BASE_DIR = Path(__file__).resolve().parent.parent
 
 # Create your views here.
+def home(request):
+    if request.method == 'POST':
+        os.system('rm -rf media/uploads/*')
+        Photo.objects.filter(image='uploads/code.jpg').delete()
+        form = PhotoForm(request.POST, request.FILES)
+        if form.is_valid():
+            form.save()
+            return redirect('/home/bookDetails')
+    else:
+        form = PhotoForm()
+    return render(request, 'home.html', {'form': form})
+
+def scan(request):
+    return render(request, 'scan.html')
+
 def detect_and_decode_barcode(image):
     gray = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
 
@@ -49,20 +69,26 @@ def detect_and_decode_barcode(image):
     return barcode_data
 
 def bookDetails(request):
-    image = cv2.imread('static/code1.png')
+
+
+    photo = Photo.objects.get(image='uploads/code.jpg')  # or .latest('uploaded_at')
+    full_path = photo.image.path  # THIS is the full path that cv2 needs
+
+    image = cv2.imread(full_path)
     barcode = detect_and_decode_barcode(image)
+    service = 'openl'
 
 
 
     if barcode == -1:
         print("No barcode found")
     else:
-        print(meta(barcode, 'goob'), "\n")
-        bookData = meta(barcode, 'goob')
+        print(meta(barcode, service), "\n")
+        bookData = meta(barcode, service)
         try:
             coverTh = cover(barcode)['thumbnail']
         except:
-            coverTh = 'static/missingCover.png'
+            coverTh = '/static/missingCover.png'
 
     template = loader.get_template('book.html')
     context = {
