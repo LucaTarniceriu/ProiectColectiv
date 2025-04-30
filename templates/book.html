@@ -7,6 +7,26 @@
 </head>
 
 <style>
+
+    body {
+        font-family: Arial, sans-serif;
+        margin: 0;
+        padding: 1rem;
+        background-color: #f8f9fa;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .button-group {
+        width: 100%;
+        max-width: 400px;
+        display: flex;
+        flex-direction: column;
+        gap: 1rem;
+        margin-bottom: 1rem;
+    }
+
     .button-group {
         display: flex;
         flex-direction: column;
@@ -57,6 +77,16 @@
         align-items: center;
     }
 
+    #back_btn{
+        background-color: #d4d4d4;
+        color: #000000;
+        transition: background-color 0.3s ease;
+    }
+
+    #back_btn:hover{
+        background-color: #ababab;
+    }
+
 
 </style>
 
@@ -99,9 +129,30 @@
 
     </br>
     <div class="button-group">
-        <button onclick="location.href=''">Add to Library</button>
-        <button onclick="location.href=''">Return</button>
-        <button onclick="location.href=''">Add to Wishlist</button>
+
+        <form action="" method="post">
+            {% csrf_token %}
+            <button type="submit" onclick="location.href=''">Add to Library</button>
+            <input type="text" hidden value="{{ code }}" name="code">
+            <input type="text" hidden value="addToLibrary" name="action">
+        </form>
+
+        <form action="" method="post">
+            {% csrf_token %}
+            <button type="submit" onclick="location.href=''">Return Book</button>
+            <input type="text" hidden value="{{ code }}" name="code">
+            <input type="text" hidden value="returnBook" name="action">
+        </form>
+
+
+        <form action="" method="post">
+            {% csrf_token %}
+            <button type="submit" onclick="location.href=''">Add to Wishlist</button>
+            <input type="text" hidden value="{{ code }}" name="code">
+            <input type="text" hidden value="addToWishlist" name="action">
+        </form>
+
+        <button id="back_btn" onclick="location.href='/home'">Back</button>
     </div>
 
 </body>
