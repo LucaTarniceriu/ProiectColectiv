@@ -2,6 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="initial-scale=1.0">
     <title>Home</title>
     <style>
         body {
@@ -93,10 +94,56 @@
             margin-top: 1rem;
             border-radius: 8px;
         }
+
+        #topnav{
+            display: flex;
+            justify-content: flex-end;
+            align-items: center;
+            padding: 10px 20px;
+            width: 88vw;
+            font-weight: bold;
+            background-color: #007bff20;
+            border-radius: 20px;
+        }
+
+
+        .menu_btn{
+            width: fit-content;
+            padding: 10px;
+        }
+
+        .menu_btn:hover{
+            text-decoration: underline;
+            cursor: pointer;
+        }
+
     </style>
 </head>
 <body>
-    <p>Hey {{ user }}</p>
+
+<div id="topnav">
+
+
+
+    <div class="menu_btn" onclick="location.href=''">
+        Wishlist
+    </div>
+
+    {% if user.is_authenticated %}
+        <div class="menu_btn" onclick="location.href='/auth/login/'">
+        {{ user }}
+        </div>
+    {% else %}
+        <div class="menu_btn" onclick="location.href='/auth/login/'">
+            login
+        </div>
+    {% endif %}
+
+
+
+</div>
+
+
     <form method="post" enctype="multipart/form-data">
         {% csrf_token %}
         <label id="file_lable" style="color: black;">
@@ -108,11 +155,8 @@
 
     <div class="button-group">
         <button onclick="location.href=''">Library</button>
-    
-        {% if not user.is_authenticated %}
-        <button onclick="location.href='/auth/login/'">Login</button>
-        {% endif %}
-    
+
+
         {% if user.is_authenticated %}
         <form method="post" action="{% url 'logout' %}" style="margin: 0;">
             {% csrf_token %}

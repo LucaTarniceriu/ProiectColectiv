@@ -2,14 +2,107 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="initial-scale=1.0">
     <title> {% block bookTitle %} {{ title }} {% endblock %}</title>
 </head>
+
+<style>
+    .button-group {
+        display: flex;
+        flex-direction: column;
+        gap: 1rem;
+    }
+
+    button {
+        width: 100%;
+        padding: 1rem;
+        font-size: 1.1rem;
+        border: none;
+        border-radius: 8px;
+        background-color: #007bff;
+        color: white;
+        cursor: pointer;
+        transition: background-color 0.3s ease;
+    }
+
+    button:hover {
+        background-color: #0056b3;
+    }
+
+    #topnav{
+        display: flex;
+        justify-content: flex-end;
+        align-items: center;
+        padding: 10px 20px;
+        width: 88vw;
+        font-weight: bold;
+        background-color: #007bff20;
+        border-radius: 20px;
+    }
+
+
+    .menu_btn{
+        width: fit-content;
+        padding: 10px;
+    }
+
+    .menu_btn:hover{
+        text-decoration: underline;
+        cursor: pointer;
+    }
+
+    #details{
+        display: felx;
+        justify-content: cetner;
+        align-items: center;
+    }
+
+
+</style>
+
 <body>
-  {% block bookDetails %}
-    <img src="{{ cover }}" alt="missing cover">
-  {% for key, value in bookData.items %}
-      <li>{{ key }}: {{ value }}</li>
-    {% endfor %}
-  {% endblock %}
+
+<div id="topnav">
+
+
+    <div class="menu_btn" onclick="location.href=''">
+        Wishlist
+    </div>
+
+    <div class="menu_btn" onclick="location.href=''">
+        Review Book
+    </div>
+
+    {% if user.is_authenticated %}
+        <div class="menu_btn" onclick="location.href='/auth/login/'">
+        {{ user }}
+        </div>
+    {% else %}
+        <div class="menu_btn" onclick="location.href='/auth/login/'">
+            login
+        </div>
+    {% endif %}
+</div>
+
+
+</br>
+
+    <div id="details">
+        {% block bookDetails %}
+            <img src="{{ cover }}" alt="missing cover">
+            {% for key, value in bookData.items %}
+                <li>{{ key }}: {{ value }}</li>
+            {% endfor %}
+        {% endblock %}
+    </div>
+
+
+    </br>
+    <div class="button-group">
+        <button onclick="location.href=''">Add to Library</button>
+        <button onclick="location.href=''">Return</button>
+        <button onclick="location.href=''">Add to Wishlist</button>
+    </div>
+
 </body>
 </html>
