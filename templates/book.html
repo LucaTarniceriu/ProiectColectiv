@@ -33,7 +33,7 @@
         gap: 1rem;
     }
 
-    button {
+    .buttons {
         width: 100%;
         padding: 1rem;
         font-size: 1.1rem;
@@ -45,7 +45,7 @@
         transition: background-color 0.3s ease;
     }
 
-    button:hover {
+    .buttons:hover {
         background-color: #0056b3;
     }
 
@@ -64,6 +64,10 @@
     .menu_btn{
         width: fit-content;
         padding: 10px;
+        background: none;
+        border: none;
+        font-weight: bold;
+        font-size: 1.1rem;
     }
 
     .menu_btn:hover{
@@ -94,14 +98,19 @@
 
 <div id="topnav">
 
+    <form action="" method="POST">
+        {% csrf_token %}
+        <button type="submit" class="menu_btn">
+            Review Book
+        </button>
+        <input type="text" hidden value="{{ code }}" name="code">
+        <input type="text" hidden value="reviewBook" name="action">
+    </form>
 
     <div class="menu_btn" onclick="location.href=''">
         Wishlist
     </div>
 
-    <div class="menu_btn" onclick="location.href=''">
-        Review Book
-    </div>
 
     {% if user.is_authenticated %}
         <div class="menu_btn" onclick="location.href='/auth/login/'">
@@ -132,14 +141,14 @@
 
         <form action="" method="post">
             {% csrf_token %}
-            <button type="submit" onclick="location.href=''">Add to Library</button>
+            <button class="buttons" type="submit">Add to Library</button>
             <input type="text" hidden value="{{ code }}" name="code">
             <input type="text" hidden value="addToLibrary" name="action">
         </form>
 
         <form action="" method="post">
             {% csrf_token %}
-            <button type="submit" onclick="location.href=''">Return Book</button>
+            <button class="buttons" type="submit">Return Book</button>
             <input type="text" hidden value="{{ code }}" name="code">
             <input type="text" hidden value="returnBook" name="action">
         </form>
@@ -147,12 +156,12 @@
 
         <form action="" method="post">
             {% csrf_token %}
-            <button type="submit" onclick="location.href=''">Add to Wishlist</button>
+            <button class="buttons" type="submit">Add to Wishlist</button>
             <input type="text" hidden value="{{ code }}" name="code">
             <input type="text" hidden value="addToWishlist" name="action">
         </form>
 
-        <button id="back_btn" onclick="location.href='/home'">Back</button>
+        <button class="buttons" id="back_btn" onclick="location.href='/home'">Back</button>
     </div>
 
 </body>

@@ -93,6 +93,23 @@ def bookDetails(request):
         except:
             coverTh = '/static/missingCover.png'
 
+
+    if request.method == "POST":
+        isbn = request.POST['code']
+        action = request.POST['action']
+
+        print(isbn, action)
+        if action == 'addToLibrary':
+            addToLibrary(isbn, request.user)
+        if action == 'returnBook':
+            returnBook(isbn, request.user)
+        if action == 'addToWishlist':
+            addToWishlist(isbn, request.user)
+        if action == 'reviewBook':
+            reviewBook(isbn, request.user)
+
+
+
     template = loader.get_template('book.html')
     context = {
         'title': bookData['Title'],
@@ -102,3 +119,16 @@ def bookDetails(request):
     }
 
     return HttpResponse(template.render(context, request))
+
+def addToLibrary(isbn, user):
+    pass
+
+def returnBook(isbn, user):
+    pass
+
+def addToWishlist(isbn, user):
+    pass
+
+def reviewBook(isbn, user):
+    #redirect to review page
+    pass
