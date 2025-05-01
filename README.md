@@ -22,3 +22,4 @@ dependencies:
 - matplotlib
 - pyzbar-tools
 - isbnlib
+- django-debug-toolbar
