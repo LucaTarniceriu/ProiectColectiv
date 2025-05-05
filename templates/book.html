@@ -1,168 +1,212 @@
+{% load static %}
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="initial-scale=1.0">
-    <title> {% block bookTitle %} {{ title }} {% endblock %}</title>
-</head>
-
-<style>
-
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="initial-scale=1.0" />
+  <title>{% block bookTitle %}{{ title }}{% endblock %}</title>
+  <style>
     body {
-        font-family: Arial, sans-serif;
-        margin: 0;
-        padding: 1rem;
-        background-color: #f8f9fa;
-        display: flex;
-        flex-direction: column;
-        align-items: center;
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 1rem;
+      background-color: #f8f9fa;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    #details {
+      text-align: center;
+      margin-bottom: 2rem;
+    }
+
+    #details img {
+      max-width: 200px;
+      border-radius: 10px;
+      margin-bottom: 1rem;
+    }
+
+    ul {
+      list-style: none;
+      padding: 0;
     }
 
     .button-group {
-        width: 100%;
-        max-width: 400px;
-        display: flex;
-        flex-direction: column;
-        gap: 1rem;
-        margin-bottom: 1rem;
-    }
-
-    .button-group {
-        display: flex;
-        flex-direction: column;
-        gap: 1rem;
+      width: 100%;
+      max-width: 400px;
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+      margin-bottom: 1rem;
     }
 
     .buttons {
-        width: 100%;
-        padding: 1rem;
-        font-size: 1.1rem;
-        border: none;
-        border-radius: 8px;
-        background-color: #007bff;
-        color: white;
-        cursor: pointer;
-        transition: background-color 0.3s ease;
+      width: 100%;
+      padding: 1rem;
+      font-size: 1.1rem;
+      border: none;
+      border-radius: 8px;
+      background-color: #007bff;
+      color: white;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
     }
 
     .buttons:hover {
-        background-color: #0056b3;
+      background-color: #0056b3;
     }
 
-    #topnav{
-        display: flex;
-        justify-content: flex-end;
-        align-items: center;
-        padding: 10px 20px;
-        width: 88vw;
-        font-weight: bold;
-        background-color: #007bff20;
-        border-radius: 20px;
+    #back_btn {
+      background-color: #d4d4d4;
+      color: #000;
     }
 
-
-    .menu_btn{
-        width: fit-content;
-        padding: 10px;
-        background: none;
-        border: none;
-        font-weight: bold;
-        font-size: 1.1rem;
+    #back_btn:hover {
+      background-color: #ababab;
     }
 
-    .menu_btn:hover{
-        text-decoration: underline;
-        cursor: pointer;
+    #stars input[type="radio"] {
+      display: none;
     }
 
-    #details{
-        display: felx;
-        justify-content: cetner;
-        align-items: center;
+    #stars label {
+      font-size: 1.4rem;
+      color: gray;
+      cursor: pointer;
+      transition: color 0.2s ease;
+      margin: 0 3px;
     }
 
-    #back_btn{
-        background-color: #d4d4d4;
-        color: #000000;
-        transition: background-color 0.3s ease;
+    .rate-button {
+      padding: 0.3rem 0.7rem;
+      font-size: 0.9rem;
+      background-color: #007bff;
+      color: white;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      display: none;
     }
 
-    #back_btn:hover{
-        background-color: #ababab;
+    .rate-button:hover {
+      background-color: #0056b3;
     }
 
+    #topnav {
+      display: flex;
+      justify-content: flex-end;
+      align-items: center;
+      padding: 10px 20px;
+      width: 88vw;
+      font-weight: bold;
+      background-color: #007bff20;
+      border-radius: 20px;
+      margin-bottom: 2rem;
+    }
 
-</style>
+    .menu_btn {
+      width: fit-content;
+      padding: 10px;
+      background: none;
+      border: none;
+      font-weight: bold;
+      font-size: 1.1rem;
+    }
 
+    .menu_btn:hover {
+      text-decoration: underline;
+      cursor: pointer;
+    }
+
+    .rating-container {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 1rem;
+      margin-top: 1rem;
+    }
+  </style>
+</head>
 <body>
 
-<div id="topnav">
+  {% include 'reusable/navbar.html' %}
 
-    <form action="" method="POST">
-        {% csrf_token %}
-        <button type="submit" class="menu_btn">
-            Review Book
-        </button>
-        <input type="text" hidden value="{{ code }}" name="code">
-        <input type="text" hidden value="reviewBook" name="action">
+  <div id="details">
+    {% block bookDetails %}
+      <img src="{{ cover }}" alt="Book Cover">
+      <ul>
+        {% for key, value in bookData.items %}
+          <li><strong>{{ key }}:</strong> {{ value }}</li>
+        {% endfor %}
+      </ul>
+
+      <div>
+        <form id="ratingForm" method="post" class="rating-container">
+          {% csrf_token %}
+          <input type="hidden" name="code" value="{{ code }}">
+          <input type="hidden" name="action" value="reviewBook">
+
+          <div id="stars">
+            {% for i in '12345' %}
+              <input type="radio" name="rating" id="star{{ i }}" value="{{ i }}">
+              <label for="star{{ i }}" class="star">&#9733;</label>
+            {% endfor %}
+          </div>
+
+          <button type="submit" class="rate-button" id="rate_btn">Rate</button>
+        </form>
+      </div>
+    {% endblock %}
+  </div>
+
+  <div class="button-group">
+    <form action="" method="post">
+      {% csrf_token %}
+      <input type="hidden" name="code" value="{{ code }}">
+      <input type="hidden" name="action" value="addToLibrary">
+      <button class="buttons" type="submit">Add to Library</button>
     </form>
 
-    <div class="menu_btn" onclick="location.href=''">
-        Wishlist
-    </div>
+    <form action="" method="post">
+      {% csrf_token %}
+      <input type="hidden" name="code" value="{{ code }}">
+      <input type="hidden" name="action" value="addToWishlist">
+      <button class="buttons" type="submit">Add to Wishlist</button>
+    </form>
 
+    <button class="buttons" id="back_btn" onclick="location.href='/home'">Back</button>
+  </div>
 
-    {% if user.is_authenticated %}
-        <div class="menu_btn" onclick="location.href='/auth/login/'">
-        {{ user }}
-        </div>
-    {% else %}
-        <div class="menu_btn" onclick="location.href='/auth/login/'">
-            login
-        </div>
-    {% endif %}
-</div>
+  <script>
+    const radios = document.querySelectorAll('#stars input[type="radio"]');
+    const labels = document.querySelectorAll('#stars label');
+    const rateBtn = document.getElementById('rate_btn');
+    const savedRating = Number("{{ existing_rating|default:'0' }}");
 
-
-</br>
-
-    <div id="details">
-        {% block bookDetails %}
-            <img src="{{ cover }}" alt="missing cover">
-            {% for key, value in bookData.items %}
-                <li>{{ key }}: {{ value }}</li>
-            {% endfor %}
-        {% endblock %}
-    </div>
-
-
-    </br>
-    <div class="button-group">
-
-        <form action="" method="post">
-            {% csrf_token %}
-            <button class="buttons" type="submit">Add to Library</button>
-            <input type="text" hidden value="{{ code }}" name="code">
-            <input type="text" hidden value="addToLibrary" name="action">
-        </form>
-
-        <form action="" method="post">
-            {% csrf_token %}
-            <button class="buttons" type="submit">Return Book</button>
-            <input type="text" hidden value="{{ code }}" name="code">
-            <input type="text" hidden value="returnBook" name="action">
-        </form>
-
-
-        <form action="" method="post">
-            {% csrf_token %}
-            <button class="buttons" type="submit">Add to Wishlist</button>
-            <input type="text" hidden value="{{ code }}" name="code">
-            <input type="text" hidden value="addToWishlist" name="action">
-        </form>
-
-        <button class="buttons" id="back_btn" onclick="location.href='/home'">Back</button>
-    </div>
+  
+    if (savedRating > 0) {
+      const star = document.querySelector(`#star${savedRating}`);
+      if (star) {
+        star.checked = true;
+        rateBtn.style.display = 'inline-block';
+  
+        labels.forEach((label, index) => {
+          if (index < savedRating) label.style.color = 'gold';
+        });
+      }
+    }
+  
+    radios.forEach((radio, index) => {
+      radio.addEventListener('change', () => {
+        rateBtn.style.display = 'inline-block';
+        labels.forEach(label => label.style.color = 'gray');
+        for (let i = 0; i <= index; i++) {
+          labels[i].style.color = 'gold';
+        }
+      });
+    });
+  </script>
 
 </body>
 </html>

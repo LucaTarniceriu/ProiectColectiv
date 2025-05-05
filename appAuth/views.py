@@ -7,17 +7,13 @@ from .forms import LoginForm, RegisterForm
 
 
 def register(request):
-    # if this is a POST request we need to process the form data
     if request.method == "POST":
-        # create a form instance and populate it with data from the request:
         form = RegisterForm(request.POST)
-        # check whether it's valid:
         if form.is_valid():
             userData = form.clean()
             newUser = User.objects.create_user(userData['username'], " ", userData['password'])
             newUser.save()
 
-            # redirect to a new URL:
             return HttpResponseRedirect("/auth/successfulLogin")
     else:
         form = RegisterForm()

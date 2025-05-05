@@ -1,0 +1,57 @@
+{% load static %}
+<div id="topnav">
+  <div class="nav-left">
+    <div class="home-link" onclick="location.href='/home/'">LibraryPlus</div>
+  </div>
+  <div class="nav-right">
+    <div class="menu_btn" onclick="location.href='/wishlist/'">Wishlist</div>
+
+    {% if user.is_authenticated %}
+      <div class="menu_btn" onclick="location.href='/profile/'">{{ user }}</div>
+    {% else %}
+      <div class="menu_btn" onclick="location.href='/auth/login/'">Login</div>
+    {% endif %}
+  </div>
+</div>
+
+<style>
+  #topnav {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 20px;
+    width: 90vw;
+    max-width: 1200px;
+    margin: 20px auto;
+    background-color: #ffffff;
+    border: 1px solid #ddd;
+    border-radius: 12px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+  }
+
+  .nav-left .home-link {
+    font-size: 1.3rem;
+    font-weight: bold;
+    color: #007bff;
+    cursor: pointer;
+  }
+
+  .nav-right {
+    display: flex;
+    gap: 1.5rem;
+    align-items: center;
+  }
+
+  .menu_btn {
+    padding: 8px 12px;
+    font-weight: 500;
+    color: #333;
+    transition: color 0.3s;
+  }
+
+  .menu_btn:hover {
+    text-decoration: underline;
+    cursor: pointer;
+    color: #007bff;
+  }
+</style>

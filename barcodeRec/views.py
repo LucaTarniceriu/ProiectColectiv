@@ -6,7 +6,7 @@ import os
 from django.template import loader
 from .forms import PhotoForm
 from django.shortcuts import redirect
-from .models import Photo
+from .models import Photo, Book, Rating
 
 import cv2
 from fontTools.misc.classifyTools import classify
@@ -70,55 +70,73 @@ def detect_and_decode_barcode(image):
 
     return barcode_data
 
+
 def bookDetails(request):
+    try:
+        photo = Photo.objects.latest('uploaded_at')
+    except Photo.DoesNotExist:
+        return HttpResponse("No uploaded photo found. Please scan a book first.")
 
-
-    photo = Photo.objects.get(image='uploads/code.jpg')  # or .latest('uploaded_at')
-    full_path = photo.image.path  # THIS is the full path that cv2 needs
-
+    full_path = photo.image.path
     image = cv2.imread(full_path)
     barcode = detect_and_decode_barcode(image)
     service = 'openl'
 
+    bookData = {}
+    coverTh = '/static/missingCover.png'
 
-
-    if barcode == -1:
-        print("No barcode found")
-    else:
-        print(meta(barcode, service), "\n")
-        bookData = meta(barcode, service)
-
+    if barcode != -1:
         try:
-            coverTh = cover(barcode)['thumbnail']
-        except:
-            coverTh = '/static/missingCover.png'
+            bookData = meta(barcode, service)
+            title = bookData.get('Title', 'Unknown Title')
+            author = ', '.join(bookData.get('Authors', []))
+            isbn = bookData.get('ISBN-13', barcode)
 
+            try:
+                coverTh = cover(barcode)['thumbnail']
+            except:
+                pass
+
+            Book.objects.get_or_create(
+                isbn=isbn,
+                defaults={'title': title, 'author': author}
+            )
+
+        except Exception as e:
+            print("Error retrieving book data:", e)
 
     if request.method == "POST":
         isbn = request.POST['code']
         action = request.POST['action']
 
-        print(isbn, action)
+        if action == 'reviewBook':
+            rating_value = int(request.POST['rating'])
+            Rating.objects.update_or_create(
+                user=request.user,
+                isbn=isbn,
+                defaults={'rating': rating_value}
+            )
+
         if action == 'addToLibrary':
             addToLibrary(isbn, request.user)
-        if action == 'returnBook':
+        elif action == 'returnBook':
             returnBook(isbn, request.user)
-        if action == 'addToWishlist':
+        elif action == 'addToWishlist':
             addToWishlist(isbn, request.user)
-        if action == 'reviewBook':
-            reviewBook(isbn, request.user)
 
-
-
-    template = loader.get_template('book.html')
+        return redirect(request.path)
+    
+    existing_rating = Rating.objects.filter(user=request.user, isbn=isbn).first()
     context = {
-        'title': bookData['Title'],
-        'code': bookData['ISBN-13'],
+        'title': bookData.get('Title', 'Unknown'),
+        'code': bookData.get('ISBN-13', barcode),
         'bookData': bookData,
         'cover': coverTh,
+        'existing_rating': existing_rating.rating if existing_rating else 0,
     }
 
-    return HttpResponse(template.render(context, request))
+    return render(request, 'book.html', context)
+
 
 def addToLibrary(isbn, user):
     pass
@@ -127,8 +145,4 @@ def returnBook(isbn, user):
     pass
 
 def addToWishlist(isbn, user):
-    pass
-
-def reviewBook(isbn, user):
-    #redirect to review page
     pass
