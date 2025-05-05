@@ -20,8 +20,8 @@
       border-radius: 12px;
       box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
       padding: 2rem;
-      width: 100%;
-      max-width: 800px;
+      width: calc(100% - 30px);
+      max-width: 600px;
       display: flex;
       flex-direction: column;
       gap: 2rem;
@@ -29,6 +29,7 @@
 
     .profile-header {
       display: flex;
+      flex-direction: column;
       align-items: center;
       gap: 1.5rem;
     }
@@ -48,29 +49,35 @@
     }
 
     .username {
-      font-size: 1.8rem;
+      font-size: 1.5rem;
       font-weight: bold;
       color: #333;
+      text-align: center;
+      
     }
 
     .sections {
       display: flex;
-      gap: 1rem;
-      flex-wrap: wrap;
-      justify-content: center;
+      gap: 1.5rem;
+      align-items: center;
+      flex-direction: column;
+      width: 100%;
     }
 
     .sections a {
-      flex: 1 1 200px;
+      width: 100%; 
+      max-width: 300px; 
+      min-width: 250px;
       text-align: center;
-      padding: 1rem;
+      padding: 1.2rem;
+      font-size: 1.2rem;
       border-radius: 10px;
       background-color: #007bff;
       color: white;
       text-decoration: none;
       font-weight: 500;
       transition: background-color 0.3s ease;
-    }
+  }
 
     .sections a:hover {
       background-color: #0056b3;
@@ -86,6 +93,7 @@
 
     .logout-form button {
       padding: 0.6rem 1.2rem;
+      max-width: 300px; 
       font-size: 1rem;
       background-color: #e0e0e0;
       color: #333;

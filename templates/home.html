@@ -16,17 +16,17 @@
       align-items: center;
     }
 
-    h1 {
+    h2 {
       font-size: 2rem;
       color: #333;
       margin-bottom: 1.5rem;
     }
 
     .container {
-      width: 100%;
+      width: calc(100% - 30px);
       max-width: 600px;
       background-color: white;
-      padding: 2rem;
+      padding: 10px 20px;
       border-radius: 12px;
       box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
       display: flex;
@@ -50,18 +50,21 @@
       max-width: 250px;
       height: auto;
       margin-bottom: 1rem;
-      border-radius: 10px;
-      border: 2px dashed #007bff50;
       padding: 0.5rem;
-      transition: border-color 0.3s;
-    }
+
+    } 
 
     #poza_cod:hover {
       border-color: #007bff;
     }
 
-    input[type="file"] {
+    input[type="file"]::file-selector-button {
       display: none;
+      border: none;
+    }
+
+    input[type="file"]{
+      display: flex;
     }
 
     button {
@@ -102,7 +105,7 @@
   {% include 'reusable/navbar.html' %}
 
   <div class="container">
-    <h1>Welcome to LibraryPlus</h1>
+    <h3>Welcome to LibraryPlus</h3>
 
     <form method="post" enctype="multipart/form-data">
       {% csrf_token %}
