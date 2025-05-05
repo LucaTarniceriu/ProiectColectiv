@@ -23,6 +23,7 @@ class Photo(models.Model):
         super().save(*args, **kwargs)
 
 class Book(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
     title = models.CharField(max_length=255)
     author = models.CharField(max_length=255, blank=True)
     isbn = models.CharField(max_length=20, unique=True)

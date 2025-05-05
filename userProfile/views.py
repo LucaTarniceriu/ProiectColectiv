@@ -1,7 +1,7 @@
 from django.shortcuts import render, redirect
 from django.contrib.auth.decorators import login_required
 from .models import UserProfile
-from barcodeRec.models import Rating
+from barcodeRec.models import Rating, Book
 
 
 @login_required
@@ -15,7 +15,8 @@ def profile_view(request):
 
 @login_required
 def saved_books_view(request):
-    return render(request, 'userProfile/saved_books.html')
+    user_books = Book.objects.filter(user=request.user).order_by('title')
+    return render(request, 'userProfile/myBooks.html', {'books': user_books})
 
 @login_required
 def wishlist_view(request):

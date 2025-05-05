@@ -118,7 +118,12 @@ def bookDetails(request):
             )
 
         if action == 'addToLibrary':
-            addToLibrary(isbn, request.user)
+            Book.objects.update_or_create(
+                user = request.user,
+                title = title,
+                author = author,
+                isbn = isbn
+            )
         elif action == 'returnBook':
             returnBook(isbn, request.user)
         elif action == 'addToWishlist':
