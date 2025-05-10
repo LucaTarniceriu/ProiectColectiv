@@ -116,12 +116,52 @@ def bookDetails(request):
 
         if action == 'reviewBook':
             rating_value = int(request.POST['rating'])
-            Rating.objects.update_or_create(
-                user=request.user,
-                title=title,
-                isbn=barcode,
-                defaults={'rating': rating_value}
-            )
+            # Rating.objects.update_or_create(
+            #     user=request.user,
+            #     title=title,
+            #     isbn=barcode,
+            #     defaults={'rating': rating_value}
+            # )
+
+            if Rating.objects.filter(isbn=barcode, user=request.user):
+                oldRating = Rating.objects.filter(isbn=barcode, user=request.user).values('rating')[0]['rating']  #save old user rating
+                Rating.objects.filter(isbn=barcode, user=request.user).update(rating=rating_value)  #update to new user rating
+                numberOfRatings = Rating.objects.filter(isbn=barcode, user=request.user).values('number_of_ratings')[0]['number_of_ratings']  #save number of ratings
+                oldTotalRating = Rating.objects.filter(isbn=barcode, user=request.user).values('total_rating')[0]['total_rating']      #save old total rating
+
+                updatedTotalRating = "{:.2f}".format((oldTotalRating * numberOfRatings - oldRating + rating_value)/numberOfRatings)
+
+                Rating.objects.filter(isbn=barcode).update(total_rating=updatedTotalRating)  #update new total rating
+                print("Rating updated")
+            else:
+                if Rating.objects.filter(isbn=barcode):
+
+                    currentTotalRating = Rating.objects.filter(isbn=barcode).values('total_rating')[0]['total_rating']
+                    currentNoOfRatings = Rating.objects.filter(isbn=barcode).values('number_of_ratings')[0]['number_of_ratings']
+
+                    Rating.objects.filter(isbn=barcode).update(number_of_ratings=currentNoOfRatings+1)
+
+                    updatedTotalRating = "{:.2f}".format((currentTotalRating*currentNoOfRatings+rating_value)/(currentNoOfRatings+1))
+                    Rating.objects.filter(isbn=barcode).update(total_rating=updatedTotalRating)
+
+                    Rating.objects.update_or_create(
+                        user=request.user,
+                        title=title,
+                        isbn=barcode,
+                        total_rating=updatedTotalRating,
+                        number_of_ratings=currentNoOfRatings+1,
+                        defaults={'rating': rating_value}
+                    )
+                else:
+                    Rating.objects.update_or_create(
+                        user=request.user,
+                        title=title,
+                        isbn=barcode,
+                        total_rating=rating_value,
+                        number_of_ratings=1,
+                        defaults={'rating': rating_value}
+                    )
+                    print("Rating created")
             return redirect('/profile/my-ratings/')
 
         if action == 'addToLibrary':
@@ -138,13 +178,27 @@ def bookDetails(request):
             return redirect('/profile/saved-books/')
     
     existing_rating = Rating.objects.filter(user=request.user, isbn=barcode).first()
+    if Rating.objects.filter(isbn=barcode).values('total_rating'):
+        total_rating_for_book = Rating.objects.filter(isbn=barcode).values('total_rating')[0]['total_rating']
+    else:
+        total_rating_for_book = 0
+
+    if Rating.objects.filter(isbn=barcode):
+        number_of_ratings_for_book = Rating.objects.filter(isbn=barcode).values('number_of_ratings')[0]['number_of_ratings']
+    else:
+        number_of_ratings_for_book = 0
+
+
+    print(total_rating_for_book)
     context = {
         'title': bookData.get('Title', 'Unknown'),
         'code': bookData.get('ISBN-13', barcode),
         'bookData': bookData,
         'cover': coverTh,
         'existing_rating': existing_rating.rating if existing_rating else 0,
-        'in_library': 1 if Book.objects.filter(user=request.user, isbn=barcode) else 0
+        'in_library': 1 if Book.objects.filter(user=request.user, isbn=barcode) else 0,
+        'total_rating': total_rating_for_book,
+        'number_of_ratings': number_of_ratings_for_book
     }
 
     return render(request, 'book.html', context)

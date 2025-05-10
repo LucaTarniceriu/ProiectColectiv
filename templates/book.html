@@ -146,16 +146,19 @@
           {% csrf_token %}
           <input type="hidden" name="code" value="{{ code }}">
           <input type="hidden" name="action" value="reviewBook">
-
+          {{ number_of_ratings }}
           <div id="stars">
             {% for i in '12345' %}
               <input type="radio" name="rating" id="star{{ i }}" value="{{ i }}">
               <label for="star{{ i }}" class="star">&#9733;</label>
             {% endfor %}
+
           </div>
 
           <button type="submit" class="rate-button" id="rate_btn">Rate</button>
+          {{ total_rating }}
         </form>
+
       </div>
     {% endblock %}
   </div>

@@ -37,6 +37,8 @@ class Rating(models.Model):
     title = models.CharField(max_length=255, default="None")
     isbn = models.CharField(max_length=20)
     rating = models.IntegerField()
+    total_rating = models.FloatField(default=0)
+    number_of_ratings = models.IntegerField(default=0)
     rated_at = models.DateTimeField(auto_now=True)
 
     class Meta:
