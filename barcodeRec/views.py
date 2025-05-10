@@ -118,9 +118,11 @@ def bookDetails(request):
             rating_value = int(request.POST['rating'])
             Rating.objects.update_or_create(
                 user=request.user,
+                title=title,
                 isbn=barcode,
                 defaults={'rating': rating_value}
             )
+            return redirect('/profile/my-ratings/')
 
         if action == 'addToLibrary':
             Book.objects.update_or_create(
@@ -129,12 +131,11 @@ def bookDetails(request):
                 author = author,
                 isbn = barcode
             )
-        elif action == 'returnBook':
-            returnBook(isbn, request.user)
-        elif action == 'addToWishlist':
-            addToWishlist(isbn, request.user)
+            return redirect('/profile/saved-books/')
 
-        return redirect(request.path)
+        if action == 'returnBook':
+            Book.objects.filter(user=request.user, isbn=barcode).delete()
+            return redirect('/profile/saved-books/')
     
     existing_rating = Rating.objects.filter(user=request.user, isbn=barcode).first()
     context = {
@@ -143,16 +144,8 @@ def bookDetails(request):
         'bookData': bookData,
         'cover': coverTh,
         'existing_rating': existing_rating.rating if existing_rating else 0,
+        'in_library': 1 if Book.objects.filter(user=request.user, isbn=barcode) else 0
     }
 
     return render(request, 'book.html', context)
 
-
-def addToLibrary(isbn, user):
-    pass
-
-def returnBook(isbn, user):
-    pass
-
-def addToWishlist(isbn, user):
-    pass

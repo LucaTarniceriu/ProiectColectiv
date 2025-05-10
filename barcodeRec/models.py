@@ -26,14 +26,15 @@ class Book(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     title = models.CharField(max_length=255)
     author = models.CharField(max_length=255, blank=True)
-    isbn = models.CharField(max_length=20, unique=True)
+    isbn = models.CharField(max_length=20)
     scanned_at = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
-        return f"{self.title} ({self.isbn})"
+        return f"{self.title} ({self.isbn}) of {self.user.username}"
 
 class Rating(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
+    title = models.CharField(max_length=255, default="None")
     isbn = models.CharField(max_length=20)
     rating = models.IntegerField()
     rated_at = models.DateTimeField(auto_now=True)

@@ -56,7 +56,7 @@
     {% for rating in ratings %}
     <a href="/home/bookDetails/?isbn={{ rating.isbn }}" class="rating-card-link">
       <div class="rating-card">
-        <h4>ISBN: {{ rating.isbn }}</h4>
+        <h4>{{ rating.title }}</h4>
         <div class="stars">
           {% for i in "12345" %}
             {% if i|add:"0" <= rating.rating %}

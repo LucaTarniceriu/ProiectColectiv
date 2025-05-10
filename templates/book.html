@@ -161,12 +161,22 @@
   </div>
 
   <div class="button-group">
-    <form action="" method="post">
-      {% csrf_token %}
-      <input type="hidden" name="code" value="{{ code }}">
-      <input type="hidden" name="action" value="addToLibrary">
-      <button class="buttons" type="submit">Add to Library</button>
-    </form>
+    {% if not in_library %}
+      <form method="post">
+        {% csrf_token %}
+        <input type="hidden" name="code" value="{{ code }}">
+        <input type="hidden" name="action" value="addToLibrary">
+        <button class="buttons" type="submit">Add to Library</button>
+      </form>
+    {% else %}
+      <form method="post">
+        {% csrf_token %}
+        <input type="hidden" name="code" value="{{ code }}">
+        <input type="hidden" name="action" value="returnBook">
+        <button class="buttons" type="submit">Return</button>
+      </form>
+    {% endif %}
+
 
 <!--    <form action="" method="post">-->
 <!--      {% csrf_token %}-->
