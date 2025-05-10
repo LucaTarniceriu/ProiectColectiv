@@ -26,13 +26,11 @@ def home(request):
         form = PhotoForm(request.POST, request.FILES)
         if form.is_valid():
             form.save()
-            return redirect('/home/bookDetails')
+            return redirect('/home/scanBook')
     else:
         form = PhotoForm()
     return render(request, 'home.html', {'form': form})
 
-def scan(request):
-    return render(request, 'scan.html')
 
 def detect_and_decode_barcode(image):
     gray = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
@@ -71,15 +69,22 @@ def detect_and_decode_barcode(image):
     return barcode_data
 
 
-def bookDetails(request):
+def scanCode(request):
     try:
         photo = Photo.objects.latest('uploaded_at')
     except Photo.DoesNotExist:
         return HttpResponse("No uploaded photo found. Please scan a book first.")
-
     full_path = photo.image.path
     image = cv2.imread(full_path)
     barcode = detect_and_decode_barcode(image)
+
+    return redirect('/home/bookDetails/?isbn=' + barcode)
+
+def bookDetails(request):
+    barcode = -1
+
+    barcode = request.GET.get('isbn')
+    print("Method get")
     service = 'openl'
 
     bookData = {}
@@ -90,17 +95,17 @@ def bookDetails(request):
             bookData = meta(barcode, service)
             title = bookData.get('Title', 'Unknown Title')
             author = ', '.join(bookData.get('Authors', []))
-            isbn = bookData.get('ISBN-13', barcode)
-
+            # isbn = bookData.get('ISBN-13', barcode)
+            isbn = barcode
             try:
                 coverTh = cover(barcode)['thumbnail']
             except:
                 pass
 
-            Book.objects.get_or_create(
-                isbn=isbn,
-                defaults={'title': title, 'author': author}
-            )
+            # Book.objects.get_or_create(
+            #     isbn=barcode,
+            #     defaults={'title': title, 'author': author}
+            # )
 
         except Exception as e:
             print("Error retrieving book data:", e)
@@ -113,7 +118,7 @@ def bookDetails(request):
             rating_value = int(request.POST['rating'])
             Rating.objects.update_or_create(
                 user=request.user,
-                isbn=isbn,
+                isbn=barcode,
                 defaults={'rating': rating_value}
             )
 
@@ -122,7 +127,7 @@ def bookDetails(request):
                 user = request.user,
                 title = title,
                 author = author,
-                isbn = isbn
+                isbn = barcode
             )
         elif action == 'returnBook':
             returnBook(isbn, request.user)
@@ -131,7 +136,7 @@ def bookDetails(request):
 
         return redirect(request.path)
     
-    existing_rating = Rating.objects.filter(user=request.user, isbn=isbn).first()
+    existing_rating = Rating.objects.filter(user=request.user, isbn=barcode).first()
     context = {
         'title': bookData.get('Title', 'Unknown'),
         'code': bookData.get('ISBN-13', barcode),

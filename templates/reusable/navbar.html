@@ -4,7 +4,6 @@
     <div class="home-link" onclick="location.href='/home/'">LibraryPlus</div>
   </div>
   <div class="nav-right">
-    <div class="menu_btn" onclick="location.href='/wishlist/'">Wishlist</div>
 
     {% if user.is_authenticated %}
       <div class="menu_btn" onclick="location.href='/profile/'">{{ user }}</div>
