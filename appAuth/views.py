@@ -14,7 +14,10 @@ def register(request):
             newUser = User.objects.create_user(userData['username'], " ", userData['password'])
             newUser.save()
 
-            return HttpResponseRedirect("/auth/successfulLogin")
+            user = authenticate(request, username=userData['username'], password=userData['password'])
+            auth_login(request, user)
+            return redirect('home')
+
     else:
         form = RegisterForm()
 
