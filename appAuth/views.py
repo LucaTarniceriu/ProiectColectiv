@@ -6,6 +6,13 @@ from userProfile.models import UserProfile
 from django.db import IntegrityError, DatabaseError
 from django.core.exceptions import ValidationError
 
+from django.shortcuts import render, redirect
+from django.contrib.auth.models import User
+from django.contrib.auth import login as auth_login
+from .forms import RegisterForm
+from userProfile.models import UserProfile
+from django.db import IntegrityError, DatabaseError
+
 def register(request):
     errors = []
 
@@ -15,6 +22,7 @@ def register(request):
             username = form.cleaned_data['username']
             password = form.cleaned_data['password']
             user_type = form.cleaned_data['user_type']
+            print(f"User Type in View: {user_type}") #debug
 
             try:
                 if User.objects.filter(username=username).exists():
@@ -25,10 +33,14 @@ def register(request):
 
                 try:
                     user_profile = UserProfile.objects.get(user=user)
+                    print(f"Before Update: {user_profile.user_type}")  #debug
                     user_profile.user_type = user_type
                     user_profile.save()
+
+                    print(f"After Update: {user_profile.user_type}") 
+
                 except UserProfile.DoesNotExist:
-                    errors.append("UserProfile not created by signal. Please try again.")
+                    UserProfile.objects.create(user=user, user_type=user_type)
 
                 auth_login(request, user)
                 return redirect('profile')
@@ -44,6 +56,7 @@ def register(request):
         form = RegisterForm()
 
     return render(request, 'registration/register.html', {"form": form, "errors": errors})
+
 
 
 
