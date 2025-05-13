@@ -126,7 +126,7 @@
         <input type="file" name="profile_picture" id="id_profile_picture" accept="image/*" onchange="this.form.submit();">
       </form>
 
-      <div class="username">{{ user.username }}</div>
+      <div class="username">{{ user.username }} - {{ user.userprofile.user_type }}</div>
     </div>
 
     <div class="sections">

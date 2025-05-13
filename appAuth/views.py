@@ -1,27 +1,51 @@
-from django.shortcuts import redirect, render, HttpResponse, HttpResponseRedirect
+from django.shortcuts import render, redirect
 from django.contrib.auth.models import User
 from django.contrib.auth import authenticate, login as auth_login
-
-from .forms import LoginForm, RegisterForm
-
-
+from .forms import RegisterForm, LoginForm
+from userProfile.models import UserProfile
+from django.db import IntegrityError, DatabaseError
+from django.core.exceptions import ValidationError
 
 def register(request):
+    errors = []
+
     if request.method == "POST":
         form = RegisterForm(request.POST)
         if form.is_valid():
-            userData = form.clean()
-            newUser = User.objects.create_user(userData['username'], " ", userData['password'])
-            newUser.save()
+            username = form.cleaned_data['username']
+            password = form.cleaned_data['password']
+            user_type = form.cleaned_data['user_type']
 
-            user = authenticate(request, username=userData['username'], password=userData['password'])
-            auth_login(request, user)
-            return redirect('home')
+            try:
+                if User.objects.filter(username=username).exists():
+                    form.add_error('username', "A user with that username already exists.")
+                    return render(request, 'registration/register.html', {"form": form, "errors": errors})
+
+                user = User.objects.create_user(username=username, password=password)
+
+                try:
+                    user_profile = UserProfile.objects.get(user=user)
+                    user_profile.user_type = user_type
+                    user_profile.save()
+                except UserProfile.DoesNotExist:
+                    errors.append("UserProfile not created by signal. Please try again.")
+
+                auth_login(request, user)
+                return redirect('profile')
+
+            except IntegrityError as e:
+                errors.append(f"Integrity error: {str(e)}")
+            except DatabaseError as e:
+                errors.append(f"Database error: {str(e)}")
+            except Exception as e:
+                errors.append(f"Unexpected error: {str(e)}")
 
     else:
         form = RegisterForm()
 
-    return render(request, "registration/register.html", {"form": form})
+    return render(request, 'registration/register.html', {"form": form, "errors": errors})
+
+
 
 def successfulLogin(request):
     return render(request, 'successfulLogin.html')

@@ -3,10 +3,7 @@ import os
 from django.contrib.auth.models import User
 
 def upload_to_fixed_name(instance, filename):
-    return 'uploads/code.jpg'  # Fixed filename
-
-
-# Create your models here.
+    return 'uploads/code.jpg'  
 
 class Photo(models.Model):
     image = models.ImageField(upload_to=upload_to_fixed_name)

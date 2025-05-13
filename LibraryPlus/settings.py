@@ -52,7 +52,7 @@ INSTALLED_APPS = [
     #our apps
     "appAuth",
     "barcodeRec",
-    "userProfile",
+    'userProfile.apps.UserprofileConfig',
 ]
 
 MIDDLEWARE = [
@@ -122,6 +122,10 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
+
+AUTHENTICATION_BACKENDS = [
+    'django.contrib.auth.backends.ModelBackend',
+]
 
 # Internationalization
 # https://docs.djangoproject.com/en/3.2/topics/i18n/
