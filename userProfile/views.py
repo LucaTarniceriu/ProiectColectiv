@@ -15,14 +15,27 @@ def profile_view(request):
 
 @login_required
 def saved_books_view(request):
-    user_books = Book.objects.filter(user=request.user).order_by('title')
+    if request.method == 'POST':
+        searchTitle = request.POST['search']
+        if searchTitle:
+            user_books = Book.objects.filter(user=request.user, title__icontains=searchTitle).order_by('title')
+        else:
+            user_books = Book.objects.filter(user=request.user).order_by('title')
+    else:
+        user_books = Book.objects.filter(user=request.user).order_by('title')
+
     return render(request, 'userProfile/myBooks.html', {'books': user_books})
 
 @login_required
-def wishlist_view(request):
-    return render(request, 'userProfile/wishlist.html')
-
-@login_required
 def my_ratings_view(request):
-    user_ratings = Rating.objects.filter(user=request.user).order_by('-rated_at')
+
+    if request.method == 'POST':
+        searchTitle = request.POST['search']
+        if searchTitle:
+            user_ratings = Rating.objects.filter(user=request.user, title__icontains=searchTitle).order_by('-rated_at')
+        else:
+            user_ratings = Rating.objects.filter(user=request.user).order_by('-rated_at')
+    else:
+        user_ratings = Rating.objects.filter(user=request.user).order_by('-rated_at')
+
     return render(request, 'userProfile/myRatings.html', {'ratings': user_ratings})

@@ -11,6 +11,26 @@
       padding: 2rem;
     }
 
+    form{
+      background-color: #fff;
+      border-radius: 10px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+      margin: 1rem auto;
+      max-width: 600px;
+    }
+
+    input{
+      font-size: 1rem;
+      border: none;
+      margin: 1rem auto;
+      text-align: center;
+      width: 100%;
+    }
+
+    input:focus{
+      outline: none;
+    }
+
     .rating-card {
       background-color: #fff;
       border-radius: 10px;
@@ -53,6 +73,12 @@
   <h2 style="text-align:center;">Your Ratings</h2>
 
   {% if ratings %}
+
+  <form method="post">
+      {% csrf_token %}
+      <input type="text" placeholder="Search..." name="search">
+    </form>
+
     {% for rating in ratings %}
     <a href="/home/bookDetails/?isbn={{ rating.isbn }}" class="rating-card-link">
       <div class="rating-card">
