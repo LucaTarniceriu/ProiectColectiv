@@ -4,120 +4,32 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="stylesheet" href="{% static 'styleHome.css' %}">
   <title>LibraryPlus - Home</title>
-  <style>
-    body {
-      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-      margin: 0;
-      padding: 2rem;
-      background-color: #f4f6f9;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-    }
-
-    h2 {
-      font-size: 2rem;
-      color: #333;
-      margin-bottom: 1.5rem;
-    }
-
-    .container {
-      width: calc(100% - 30px);
-      max-width: 600px;
-      background-color: white;
-      padding: 10px 20px;
-      border-radius: 12px;
-      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      gap: 2rem;
-    }
-
-    form {
-      width: 100%;
-      text-align: center;
-    }
-
-    label#file_label {
-      cursor: pointer;
-      display: block;
-    }
-
-    #poza_cod {
-      width: 100%;
-      max-width: 250px;
-      height: auto;
-      margin-bottom: 1rem;
-      padding: 0.5rem;
-
-    } 
-
-    #poza_cod:hover {
-      border-color: #007bff;
-    }
-
-    input[type="file"]::file-selector-button {
-      display: none;
-      border: none;
-    }
-
-    input[type="file"]{
-      display: flex;
-    }
-
-    button {
-      width: 100%;
-      padding: 0.75rem;
-      font-size: 1rem;
-      border: none;
-      border-radius: 8px;
-      background-color: #007bff;
-      color: white;
-      cursor: pointer;
-      transition: background-color 0.3s ease;
-    }
-
-    button:hover {
-      background-color: #0056b3;
-    }
-
-    .button-group {
-      width: 100%;
-      display: flex;
-      flex-direction: column;
-      gap: 1rem;
-    }
-
-    #logout_btn {
-      background-color: #e0e0e0;
-      color: #333;
-    }
-
-    #logout_btn:hover {
-      background-color: #c2c2c2;
-    }
-  </style>
 </head>
 <body>
 
   {% include 'reusable/navbar.html' %}
-
+  {% include 'reusable/styleCommon.html' with random_number=random_number %}
+  <div class="backgroundPicture"></div>
   <div class="container">
     <h3>Welcome to LibraryPlus</h3>
 
     <form method="post" enctype="multipart/form-data">
       {% csrf_token %}
       <label id="file_label">
-        <img id="poza_cod" src="{% static 'poza_cod_tr.png' %}" alt="Upload" />
+        <img id="poza_cod" src="{% static 'poza_cod_nou.png' %}" alt="Upload" />
         {{ form.image }}
       </label>
       <button type="submit">Upload</button>
     </form>
 
-    <div class="button-group">
-      <button onclick="location.href='/profile/saved-books/'">Library</button>
+<!--    <div class="button-group">-->
+      <form method="post" action="{% url 'saved_books' %}" >
+        {% csrf_token %}
+        <button type="submit" id="libraryButton">Library</button>
+        <input type="text" value="" name="search" hidden>
+      </form>
 
       {% if user.is_authenticated %}
       <form method="post" action="{% url 'logout' %}" style="margin: 0">
@@ -125,7 +37,7 @@
         <button id="logout_btn" type="submit">Logout</button>
       </form>
       {% endif %}
-    </div>
+<!--    </div>-->
   </div>
 
 </body>

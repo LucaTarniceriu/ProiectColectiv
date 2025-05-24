@@ -1,0 +1,60 @@
+body {
+      font-family: Arial, sans-serif;
+      background-color: #f8f9fa;
+    }
+
+    form{
+      background-color: #fff;
+      border-radius: 10px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+      margin: 1rem auto;
+      max-width: 600px;
+    }
+
+    input{
+      font-size: 1rem;
+      border: none;
+      margin: 1rem auto;
+      text-align: center;
+      width: 100%;
+    }
+
+    input:focus{
+      outline: none;
+    }
+
+    .book-card {
+      background-color: #fff;
+      border-radius: 10px;
+      padding: 1rem;
+      margin: 1rem auto;
+      max-width: 600px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+    }
+
+    .book-card h4 {
+      margin: 0 0 0.5rem 0;
+    }
+
+    .stars {
+      font-size: 1.2rem;
+      color: gold;
+    }
+
+    .date {
+      font-size: 0.9rem;
+      color: #665;
+    }
+
+    .book-card-link {
+      text-decoration: none;
+      color: inherit;
+      display: block;
+    }
+
+    .book-card-link:visited,
+    .book-card-link:active,
+    .book-card-link:hover {
+      text-decoration: none;
+      color: inherit;
+    }

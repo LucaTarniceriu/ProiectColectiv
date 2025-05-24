@@ -2,193 +2,78 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+  <link rel="stylesheet" href="{% static 'styleBook.css' %}">
   <meta charset="UTF-8" />
   <meta name="viewport" content="initial-scale=1.0" />
   <title>{% block bookTitle %}{{ title }}{% endblock %}</title>
-  <style>
-    body {
-      font-family: Arial, sans-serif;
-      margin: 0;
-      padding: 1rem;
-      background-color: #f8f9fa;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-    }
-
-    #details {
-      text-align: center;
-      margin-bottom: 2rem;
-    }
-
-    #details img {
-      max-width: 200px;
-      border-radius: 10px;
-      margin-bottom: 1rem;
-    }
-
-    ul {
-      list-style: none;
-      padding: 0;
-    }
-
-    .button-group {
-      width: 100%;
-      max-width: 400px;
-      display: flex;
-      flex-direction: column;
-      gap: 1rem;
-      margin-bottom: 1rem;
-    }
-
-    .buttons {
-      width: 100%;
-      padding: 1rem;
-      font-size: 1.1rem;
-      border: none;
-      border-radius: 8px;
-      background-color: #007bff;
-      color: white;
-      cursor: pointer;
-      transition: background-color 0.3s ease;
-    }
-
-    .buttons:hover {
-      background-color: #0056b3;
-    }
-
-    #back_btn {
-      background-color: #d4d4d4;
-      color: #000;
-    }
-
-    #back_btn:hover {
-      background-color: #ababab;
-    }
-
-    #stars input[type="radio"] {
-      display: none;
-    }
-
-    #stars label {
-      font-size: 1.4rem;
-      color: gray;
-      cursor: pointer;
-      transition: color 0.2s ease;
-      margin: 0 3px;
-    }
-
-    .rate-button {
-      padding: 0.3rem 0.7rem;
-      font-size: 0.9rem;
-      background-color: #007bff;
-      color: white;
-      border: none;
-      border-radius: 5px;
-      cursor: pointer;
-      display: none;
-    }
-
-    .rate-button:hover {
-      background-color: #0056b3;
-    }
-
-    #topnav {
-      display: flex;
-      justify-content: flex-end;
-      align-items: center;
-      padding: 10px 20px;
-      width: 88vw;
-      font-weight: bold;
-      background-color: #007bff20;
-      border-radius: 20px;
-      margin-bottom: 2rem;
-    }
-
-    .menu_btn {
-      width: fit-content;
-      padding: 10px;
-      background: none;
-      border: none;
-      font-weight: bold;
-      font-size: 1.1rem;
-    }
-
-    .menu_btn:hover {
-      text-decoration: underline;
-      cursor: pointer;
-    }
-
-    .rating-container {
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      gap: 1rem;
-      margin-top: 1rem;
-    }
-  </style>
 </head>
 <body>
 
   {% include 'reusable/navbar.html' %}
+  {% include 'reusable/styleCommon.html' with random_number=random_number %}
+  <div class="backgroundPicture"></div>
 
-  <div id="details">
-    {% block bookDetails %}
-      <img src="{{ cover }}" alt="Book Cover">
-      <ul>
-        {% for key, value in bookData.items %}
-          <li><strong>{{ key }}:</strong> {{ value }}</li>
-        {% endfor %}
-      </ul>
+  <div class="container">
 
-      <div>
-        <form id="ratingForm" method="post" class="rating-container">
+
+    <div id="details">
+      {% block bookDetails %}
+        <img src="{{ cover }}" alt="Book Cover">
+        <ul>
+          {% for key, value in bookData.items %}
+            <li><strong>{{ key }}:</strong> {{ value }}</li>
+          {% endfor %}
+        </ul>
+
+        <div>
+          <form id="ratingForm" method="post" class="rating-container">
+            {% csrf_token %}
+            <input type="hidden" name="code" value="{{ code }}">
+            <input type="hidden" name="action" value="reviewBook">
+            {{ number_of_ratings }}
+            <div id="stars">
+              {% for i in '12345' %}
+                <input type="radio" name="rating" id="star{{ i }}" value="{{ i }}">
+                <label for="star{{ i }}" class="star">&#9733;</label>
+              {% endfor %}
+
+            </div>
+
+            <button type="submit" class="rate-button" id="rate_btn">Rate</button>
+            {{ total_rating }}
+          </form>
+
+        </div>
+      {% endblock %}
+    </div>
+
+    <div class="button-group">
+      {% if not in_library %}
+        <form method="post">
           {% csrf_token %}
           <input type="hidden" name="code" value="{{ code }}">
-          <input type="hidden" name="action" value="reviewBook">
-          {{ number_of_ratings }}
-          <div id="stars">
-            {% for i in '12345' %}
-              <input type="radio" name="rating" id="star{{ i }}" value="{{ i }}">
-              <label for="star{{ i }}" class="star">&#9733;</label>
-            {% endfor %}
-
-          </div>
-
-          <button type="submit" class="rate-button" id="rate_btn">Rate</button>
-          {{ total_rating }}
+          <input type="hidden" name="action" value="addToLibrary">
+          <button class="buttons" type="submit">Add to Library</button>
         </form>
-
-      </div>
-    {% endblock %}
-  </div>
-
-  <div class="button-group">
-    {% if not in_library %}
-      <form method="post">
-        {% csrf_token %}
-        <input type="hidden" name="code" value="{{ code }}">
-        <input type="hidden" name="action" value="addToLibrary">
-        <button class="buttons" type="submit">Add to Library</button>
-      </form>
-    {% else %}
-      <form method="post">
-        {% csrf_token %}
-        <input type="hidden" name="code" value="{{ code }}">
-        <input type="hidden" name="action" value="returnBook">
-        <button class="buttons" type="submit">Return</button>
-      </form>
-    {% endif %}
+      {% else %}
+        <form method="post">
+          {% csrf_token %}
+          <input type="hidden" name="code" value="{{ code }}">
+          <input type="hidden" name="action" value="returnBook">
+          <button class="buttons" type="submit">Return</button>
+        </form>
+      {% endif %}
 
 
-<!--    <form action="" method="post">-->
-<!--      {% csrf_token %}-->
-<!--      <input type="hidden" name="code" value="{{ code }}">-->
-<!--      <input type="hidden" name="action" value="addToWishlist">-->
-<!--      <button class="buttons" type="submit">Add to Wishlist</button>-->
-<!--    </form>-->
+  <!--    <form action="" method="post">-->
+  <!--      {% csrf_token %}-->
+  <!--      <input type="hidden" name="code" value="{{ code }}">-->
+  <!--      <input type="hidden" name="action" value="addToWishlist">-->
+  <!--      <button class="buttons" type="submit">Add to Wishlist</button>-->
+  <!--    </form>-->
 
-    <button class="buttons" id="back_btn" onclick="location.href='/home'">Back</button>
+      <button class="buttons" id="back_btn" onclick="location.href='/home'">Back</button>
+    </div>
   </div>
 
   <script>

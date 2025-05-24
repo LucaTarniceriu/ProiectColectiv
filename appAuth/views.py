@@ -13,6 +13,8 @@ from .forms import RegisterForm
 from userProfile.models import UserProfile
 from django.db import IntegrityError, DatabaseError
 
+import random
+
 def register(request):
     errors = []
 
@@ -43,7 +45,7 @@ def register(request):
                     UserProfile.objects.create(user=user, user_type=user_type)
 
                 auth_login(request, user)
-                return redirect('profile')
+                return redirect('home')
 
             except IntegrityError as e:
                 errors.append(f"Integrity error: {str(e)}")
@@ -55,7 +57,7 @@ def register(request):
     else:
         form = RegisterForm()
 
-    return render(request, 'registration/register.html', {"form": form, "errors": errors})
+    return render(request, 'registration/register.html', {"form": form, "errors": errors, 'random_number': random.randint(0, 7)})
 
 
 
@@ -84,4 +86,4 @@ def login(request):
     else:
         form = LoginForm()
 
-    return render(request, "registration/login.html", {"form": form})
+    return render(request, "registration/login.html", {"form": form, 'random_number': random.randint(0, 7)})

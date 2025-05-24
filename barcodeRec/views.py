@@ -13,6 +13,7 @@ from fontTools.misc.classifyTools import classify
 from pyzbar.pyzbar import decode
 import matplotlib.pyplot as plt
 from isbnlib import *
+import random
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -29,7 +30,7 @@ def home(request):
             return redirect('/home/scanBook')
     else:
         form = PhotoForm()
-    return render(request, 'home.html', {'form': form})
+    return render(request, 'home.html', {'form': form, 'random_number': random.randint(0, 7)})
 
 
 def detect_and_decode_barcode(image):
@@ -198,7 +199,8 @@ def bookDetails(request):
         'existing_rating': existing_rating.rating if existing_rating else 0,
         'in_library': 1 if Book.objects.filter(user=request.user, isbn=barcode) else 0,
         'total_rating': total_rating_for_book,
-        'number_of_ratings': number_of_ratings_for_book
+        'number_of_ratings': number_of_ratings_for_book,
+        'random_number': random.randint(0, 7)
     }
 
     return render(request, 'book.html', context)

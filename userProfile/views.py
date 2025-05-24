@@ -2,6 +2,7 @@ from django.shortcuts import render, redirect
 from django.contrib.auth.decorators import login_required
 from .models import UserProfile
 from barcodeRec.models import Rating, Book
+import random
 
 
 @login_required
@@ -11,7 +12,7 @@ def profile_view(request):
         profile.profile_picture = request.FILES['profile_picture']
         profile.save()
         return redirect('profile')  
-    return render(request, "userProfile/profile.html")
+    return render(request, "userProfile/profile.html", {'random_number': random.randint(0, 7)})
 
 @login_required
 def saved_books_view(request):
@@ -24,7 +25,7 @@ def saved_books_view(request):
     else:
         user_books = Book.objects.filter(user=request.user).order_by('title')
 
-    return render(request, 'userProfile/myBooks.html', {'books': user_books})
+    return render(request, 'userProfile/myBooks.html', {'books': user_books, 'random_number': random.randint(0, 7)})
 
 @login_required
 def my_ratings_view(request):
@@ -38,4 +39,4 @@ def my_ratings_view(request):
     else:
         user_ratings = Rating.objects.filter(user=request.user).order_by('-rated_at')
 
-    return render(request, 'userProfile/myRatings.html', {'ratings': user_ratings})
+    return render(request, 'userProfile/myRatings.html', {'ratings': user_ratings, 'random_number': random.randint(0, 7)})
