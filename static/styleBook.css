@@ -74,7 +74,7 @@ body {
 
     #stars label {
       font-size: 1.4rem;
-      color: #c6b743;
+      color: gray;
       cursor: pointer;
       transition: color 0.2s ease;
       margin: 0 3px;
