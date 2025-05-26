@@ -19,6 +19,7 @@ import debug_toolbar
 from django.conf import settings
 from django.conf.urls.static import static
 from django.contrib import admin
+from . import views
 
 urlpatterns = [
     path('admin/', admin.site.urls),          
@@ -28,6 +29,6 @@ urlpatterns = [
     path('', include("appAuth.urls")),
     path('home/', include("barcodeRec.urls")),
     path("profile/", include("userProfile.urls")),
-
+    path('updateMode/', views.updateMode, name='updateMode'),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 

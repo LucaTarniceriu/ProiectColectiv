@@ -18,7 +18,13 @@
 
     <div id="details">
       {% block bookDetails %}
-        <img src="{{ cover }}" alt="Book Cover">
+
+        {% if user.userprofile.display_mode == 'dark' %}
+          <img src="{{ cover }}" alt="Book Cover" style="filter: invert(1);">
+        {% else %}
+          <img src="{{ cover }}" alt="Book Cover" style="filter: invert(0);">
+        {% endif %}
+
         <ul>
           {% for key, value in bookData.items %}
             <li><strong>{{ key }}:</strong> {{ value }}</li>
@@ -90,7 +96,7 @@
         rateBtn.style.display = 'inline-block';
   
         labels.forEach((label, index) => {
-          if (index < savedRating) label.style.color = 'gold';
+          if (index < savedRating) label.style.color = '#c6b743';
         });
       }
     }
@@ -100,7 +106,7 @@
         rateBtn.style.display = 'inline-block';
         labels.forEach(label => label.style.color = 'gray');
         for (let i = 0; i <= index; i++) {
-          labels[i].style.color = 'gold';
+          labels[i].style.color = '#c6b743';
         }
       });
     });

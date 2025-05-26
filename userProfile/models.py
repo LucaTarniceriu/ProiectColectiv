@@ -8,6 +8,7 @@ class UserProfile(models.Model):
     bio = models.TextField(blank=True)
     profile_picture = models.ImageField(upload_to='profiles/', blank=True, null=True)
     birth_date = models.DateField(null=True, blank=True)
+    display_mode = models.CharField(max_length=6, default='light')
 
     def __str__(self):
         return f"{self.user.username} - {self.user_type}"

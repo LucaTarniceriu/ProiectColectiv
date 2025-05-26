@@ -15,7 +15,7 @@
   <div class="container">
     <h3>Welcome to LibraryPlus</h3>
 
-    <form method="post" enctype="multipart/form-data">
+    <form method="post" enctype="multipart/form-data" id="imageForm">
       {% csrf_token %}
       <label id="file_label">
         <img id="poza_cod" src="{% static 'poza_cod_nou.png' %}" alt="Upload" />
@@ -25,14 +25,14 @@
     </form>
 
 <!--    <div class="button-group">-->
-      <form method="post" action="{% url 'saved_books' %}" >
+      <form method="post" action="{% url 'saved_books' %}" id="libraryForm">
         {% csrf_token %}
         <button type="submit" id="libraryButton">Library</button>
         <input type="text" value="" name="search" hidden>
       </form>
 
       {% if user.is_authenticated %}
-      <form method="post" action="{% url 'logout' %}" style="margin: 0">
+      <form method="post" action="{% url 'logout' %}" style="margin: 0" id="logoutForm">
         {% csrf_token %}
         <button id="logout_btn" type="submit">Logout</button>
       </form>

@@ -1,3 +1,15 @@
+@media only screen and (max-width: 1000px){
+        #details img {
+            width: 12vh;
+        }
+    }
+    @media only screen and (min-width: 1001px){
+        #details img {
+            width: 10vw;
+        }
+
+    }
+
 body {
       font-family: Arial, sans-serif;
       margin: 0;
@@ -13,8 +25,6 @@ body {
     }
 
     #details img {
-      width: 10vw;
-      max-width: 20vw;
       border-radius: 10px;
       margin-bottom: 1rem;
     }
@@ -39,7 +49,7 @@ body {
       font-size: 1.1rem;
       border: none;
       border-radius: 8px;
-      background-color: #3948bc;
+      background-color: #4e59ad;
       color: white;
       cursor: pointer;
       transition: background-color 0.3s ease;
@@ -64,7 +74,7 @@ body {
 
     #stars label {
       font-size: 1.4rem;
-      color: gray;
+      color: #c6b743;
       cursor: pointer;
       transition: color 0.2s ease;
       margin: 0 3px;
@@ -73,7 +83,7 @@ body {
     .rate-button {
       padding: 0.3rem 0.7rem;
       font-size: 0.9rem;
-      background-color: #007bff;
+      background-color: #4e59ad;
       color: white;
       border: none;
       border-radius: 5px;
@@ -82,7 +92,7 @@ body {
     }
 
     .rate-button:hover {
-      background-color: #0056b3;
+      background-color: #2a379b;
     }
 
     #topnav {

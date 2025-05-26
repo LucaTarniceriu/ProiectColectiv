@@ -10,10 +10,34 @@
     {% else %}
       <div class="menu_btn" onclick="location.href='/auth/login/'">Login</div>
     {% endif %}
+
+    {% if user.userprofile.display_mode == 'dark' %}
+      <form method="post" action="/updateMode/" class="switchForm" style="margin:0;">
+        {% csrf_token %}
+        <input type="image" src="{% static 'lightMode.png' %}" value="" class="modeSwitch">
+        <input type="text" hidden value="ligh" name="mode">
+      </form>
+    {% else %}
+      <form method="post" action="/updateMode/" class="switchForm" style="margin:0">
+        {% csrf_token %}
+        <input type="image" src="{% static 'darkMode.png' %}" value="" class="modeSwitch">
+        <input type="text" hidden value="dark" name="mode">
+      </form>
+    {% endif %}
+
   </div>
 </div>
 
 <style>
+
+  #switchForm{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: fit-content;
+    height: auto;
+  }
+
   #topnav {
     display: flex;
     justify-content: space-between;
@@ -22,8 +46,7 @@
     width: 75vw;
     max-width: 75vw;
     margin: 20px auto;
-<!--    background-color: #ffffff;-->
-    border: 1px solid #ddd;
+    border: 1px solid #00000000;
     border-radius: 12px;
     background-color: rgba(244, 244, 244, 0.5);
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
@@ -52,6 +75,18 @@
   .menu_btn:hover {
     text-decoration: underline;
     cursor: pointer;
-    color: #007bff;
+    color: #3948bc;
   }
+
+    @media only screen and (max-width: 1000px){
+        .modeSwitch{
+            width: 3vh;
+        }
+    }
+    @media only screen and (min-width: 1001px){
+      .modeSwitch{
+        width: 2vw;
+      }
+    }
 </style>
+

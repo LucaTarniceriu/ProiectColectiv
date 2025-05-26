@@ -65,7 +65,7 @@ body {
       padding: 1.2rem;
       font-size: 1.2rem;
       border-radius: 10px;
-      background-color: #3948bc;
+      background-color: #4e59ad;
       color: white;
       text-decoration: none;
       font-weight: 500;
@@ -89,13 +89,13 @@ body {
       max-width: 300px;
       font-size: 1rem;
       background-color: #e0e0e0;
-      color: #333;
-      border: none;
+      color: #000000;
+      border: 2px solid #cecece;
       border-radius: 8px;
       cursor: pointer;
       transition: background-color 0.3s ease;
     }
 
     .logout-form button:hover {
-      background-color: #c2c2c2;
+      background-color: #e0e0e0cc;
     }
