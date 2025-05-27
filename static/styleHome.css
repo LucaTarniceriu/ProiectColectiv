@@ -12,40 +12,45 @@ h2 {
   margin-bottom: 1.5rem;
 }
 
-.container {
-  width: 100vw;
-  height: 80vh;
-  max-width: 75vw;
-  padding: 20px 20px;
-  border-radius: 12px;
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 2rem;
-}
+    form {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      width: fit-content;
+    }
 
-form {
-  width: fit-content;
-  width: 50vw;
-  text-align: center;
-  align-items: center;
-}
 
-label#file_label {
-  cursor: pointer;
-  width: fit-content;
-  display: block;
-  margin: auto;
-}
+    label#file_label {
+      cursor: pointer;
+      width: fit-content;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      margin: auto;
+    }
+    @media only screen and (max-width: 1000px){
+        #poza_cod{
+            width: 25vh;
+        }
+        button{
+            width: 45vw;
+        }
+    }
+    @media only screen and (min-width: 1001px){
+        #poza_cod {
+            width: 18vw;
+        }button{
+            width: 35vw;
+        }
 
-#poza_cod {
-  width: 20vw;
-  height: auto;
-  margin-bottom: 1rem;
-  padding: 0.5rem;
-  border-radius: 20px;
-}
+    }
+
+    #poza_cod {
+      height: auto;
+      margin-bottom: 1rem;
+      padding: 0.5rem;
+      border-radius: 20px;
+    }
 
 #poza_cod:hover {
   border-color: #007bff;
@@ -64,9 +69,16 @@ button {
   transition: background-color 0.3s ease;
 }
 
-button:hover {
-  background-color: #2a379b;
-}
+    button {
+      padding: 0.75rem;
+      font-size: 1rem;
+      border: 2px solid #4e59ad;
+      border-radius: 8px ;
+      background-color: #4e59ad;
+      color: white;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+    }
 
 .button-group {
   width: 100%;
@@ -80,9 +92,11 @@ button:hover {
   color: #000000;
 }
 
-#logout_btn:hover {
-  background-color: #e0e0e0cc;
-}
+    #logout_btn {
+      background-color: #e0e0e0aa;
+      border: 2px solid #cecece;
+      color: #000000;
+    }
 
 .csv-upload-img {
   width: 200px;

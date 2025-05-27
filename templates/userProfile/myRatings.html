@@ -14,9 +14,9 @@
 
   {% if ratings %}
 
-  <form method="post">
+  <form method="post" id="searchForm">
       {% csrf_token %}
-      <input type="text" placeholder="Search..." name="search">
+      <input type="text" placeholder="Search..." name="search" id="searchInput">
     </form>
 
     {% for rating in ratings %}

@@ -18,7 +18,11 @@
         {% csrf_token %}
         <label for="id_profile_picture">
           {% if user.userprofile.profile_picture %}
-            <img src="{{ user.userprofile.profile_picture.url }}" alt="Profile Picture">
+            {% if user.userprofile.display_mode == 'dark' %}
+              <img src="{{ user.userprofile.profile_picture.url }}" alt="Profile Picture" style="filter: invert(1);">
+            {% else %}
+              <img src="{{ user.userprofile.profile_picture.url }}" alt="Profile Picture" style="filter: invert(0);">
+            {% endif %}
           {% else %}
             <img src="{% static 'defaultpfp.jpg' %}" alt="Default Picture">
           {% endif %}
