@@ -1,0 +1,101 @@
+body {
+      font-family: Arial, sans-serif;
+      background-color: #f4f6f9;
+      margin: 0;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    .container {
+      background-color: rgba(244, 244, 244, 0.7);
+      border-radius: 12px;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
+      width: 100vw;
+      height: 80vh;
+      max-width: 75vw;
+      padding: 20px 20px;
+      display: flex;
+      flex-direction: column;
+      gap: 2rem;
+    }
+
+    .profile-header {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 1.5rem;
+    }
+
+    .profile-header img {
+      width: 120px;
+      height: 120px;
+      object-fit: cover;
+      border-radius: 50%;
+      border: 2px solid #ddd;
+      cursor: pointer;
+      transition: border-color 0.3s ease;
+    }
+
+    .profile-header img:hover {
+      border-color: #007bff;
+    }
+
+    .username {
+      font-size: 1.5rem;
+      font-weight: bold;
+      color: #000000;
+      text-align: center;
+
+    }
+
+    .sections {
+      display: flex;
+      gap: 1.5rem;
+      align-items: center;
+      flex-direction: column;
+      width: 100%;
+    }
+
+    .sections a {
+      width: 100%;
+      max-width: 300px;
+      min-width: 250px;
+      text-align: center;
+      padding: 1.2rem;
+      font-size: 1.2rem;
+      border-radius: 10px;
+      background-color: #3948bc;
+      color: white;
+      text-decoration: none;
+      font-weight: 500;
+      transition: background-color 0.3s ease;
+  }
+
+    .sections a:hover {
+      background-color: #2a379b;
+    }
+
+    input[type="file"] {
+      display: none;
+    }
+
+    .logout-form {
+      text-align: center;
+    }
+
+    .logout-form button {
+      padding: 0.6rem 1.2rem;
+      max-width: 300px;
+      font-size: 1rem;
+      background-color: #e0e0e0;
+      color: #333;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+    }
+
+    .logout-form button:hover {
+      background-color: #c2c2c2;
+    }

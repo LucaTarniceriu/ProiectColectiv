@@ -1,0 +1,61 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <link rel="stylesheet" href="{% static 'styleManageBooks.css' %}">
+  <title>Manage Books - LibraryPlus</title>
+</head>
+<body>
+
+  {% include 'reusable/navbar.html' %}
+  {% include 'reusable/styleCommon.html' with random_number=random_number %}
+
+  <h2>All Uploaded Books</h2>
+
+  {% if messages %}
+    <div id="message-container">
+      {% for message in messages %}
+        <div class="alert {{ message.tags }}">{{ message }}</div>
+      {% endfor %}
+    </div>
+  {% endif %}
+
+  {% if books %}
+  <table>
+    <thead>
+      <tr>
+        <th>Title</th>
+        <th>Author</th>
+        <th>ISBN</th>
+        <th>Uploaded By</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for book in books %}
+      <tr>
+        <td>{{ book.title }}</td>
+        <td>{{ book.author }}</td>
+        <td>{{ book.isbn }}</td>
+        <td>{{ book.user.username }}</td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+  {% else %}
+    <div class="empty-message">No books have been uploaded yet.</div>
+  {% endif %}
+
+</body>
+</html>
+
+<script>
+  setTimeout(() => {
+    const messages = document.getElementById("message-container");
+    if (messages) {
+      messages.style.transition = "opacity 0.5s ease-out";
+      messages.style.opacity = "0";
+      setTimeout(() => messages.remove(), 500);
+    }
+  }, 4000); 
+</script>

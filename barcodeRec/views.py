@@ -1,22 +1,20 @@
-from heapq import merge
-
-from django.shortcuts import render, HttpResponse, HttpResponseRedirect
+import csv
+from django.contrib import messages
+from django.shortcuts import render, HttpResponse, redirect
 from pathlib import Path
 import os
 from django.template import loader
+from userProfile.decorators import user_type_required
 from .forms import PhotoForm
-from django.shortcuts import redirect
 from .models import Photo, Book, Rating
-
 import cv2
-from fontTools.misc.classifyTools import classify
 from pyzbar.pyzbar import decode
-import matplotlib.pyplot as plt
 from isbnlib import *
+import random
+from .map_headers import map_headers, EXPECTED_FIELDS
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 
-# Create your views here.
 def home(request):
     if not request.user.is_authenticated:
         return redirect('/auth/login')
@@ -29,7 +27,7 @@ def home(request):
             return redirect('/home/scanBook')
     else:
         form = PhotoForm()
-    return render(request, 'home.html', {'form': form})
+    return render(request, 'home.html', {'form': form, 'random_number': random.randint(0, 7)})
 
 
 def detect_and_decode_barcode(image):
@@ -198,8 +196,58 @@ def bookDetails(request):
         'existing_rating': existing_rating.rating if existing_rating else 0,
         'in_library': 1 if Book.objects.filter(user=request.user, isbn=barcode) else 0,
         'total_rating': total_rating_for_book,
-        'number_of_ratings': number_of_ratings_for_book
+        'number_of_ratings': number_of_ratings_for_book,
+        'random_number': random.randint(0, 7)
     }
 
     return render(request, 'book.html', context)
+
+
+@user_type_required("Librarie")
+def manage_books(request):
+    if request.method == "POST":
+        csv_file = request.FILES.get("csv_file")
+        if not csv_file:
+            messages.error(request, "No file uploaded.")
+            return redirect("manage_books")
+
+        if not csv_file.name.endswith(".csv"):
+            messages.error(request, "Invalid file format.")
+            return redirect("manage_books")
+
+        decoded_file = csv_file.read().decode("utf-8").splitlines()
+        reader = csv.DictReader(decoded_file)
+
+        field_map = map_headers(reader.fieldnames)
+
+        if len(field_map) < len(EXPECTED_FIELDS):
+            missing = [k for k in EXPECTED_FIELDS if k not in field_map]
+            messages.error(request, f"Missing required column(s): {', '.join(missing)}")
+            books = Book.objects.filter(user=request.user)
+
+        imported_count = 0
+        skipped_count = 0
+
+        for row in reader:
+            try:
+                title = row.get(field_map.get("title", ""), "").strip()
+                author = row.get(field_map.get("author", ""), "").strip()
+                isbn = row.get(field_map.get("isbn", ""), "").strip()
+
+                if Book.objects.filter(title=title, author=author, user=request.user).exists():
+                    skipped_count += 1
+                    continue
+
+                Book.objects.create(title=title, author=author, isbn=isbn, user=request.user)
+                imported_count += 1
+
+            except:
+                continue
+
+        messages.success(request, f"CSV processed: {imported_count} imported, {skipped_count} skipped (reason: duplicates). ")
+
+    books = Book.objects.filter(user=request.user)
+    return render(request, "manageBooks.html", {"books": books})
+
+
 
