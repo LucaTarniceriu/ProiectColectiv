@@ -1,6 +1,6 @@
 body {
     font-family: 'Segoe UI', sans-serif;
-    background-color: #f4f6f9;
+    background-color: #f4f6f900;
     margin: 0;
     padding: 2rem;
 }
@@ -28,7 +28,7 @@ th, td {
 }
 
 th {
-    background-color: #007bff;
+    background-color: #4e59ad;
     color: white;
     font-weight: 600;
 }
