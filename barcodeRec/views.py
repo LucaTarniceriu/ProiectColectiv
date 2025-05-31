@@ -93,6 +93,8 @@ def bookDetails(request):
             bookData = meta(barcode, service)
             title = bookData.get('Title', 'Unknown Title')
             author = ', '.join(bookData.get('Authors', []))
+            description = desc(barcode)
+            print(description)
             # isbn = bookData.get('ISBN-13', barcode)
             isbn = barcode
             try:
@@ -167,7 +169,8 @@ def bookDetails(request):
                 user = request.user,
                 title = title,
                 author = author,
-                isbn = barcode
+                isbn = barcode,
+                cover = coverTh,
             )
             return redirect('/profile/saved-books/')
 
@@ -192,6 +195,7 @@ def bookDetails(request):
         'title': bookData.get('Title', 'Unknown'),
         'code': bookData.get('ISBN-13', barcode),
         'bookData': bookData,
+        'description': description,
         'cover': coverTh,
         'existing_rating': existing_rating.rating if existing_rating else 0,
         'in_library': 1 if Book.objects.filter(user=request.user, isbn=barcode) else 0,
@@ -246,7 +250,9 @@ def manage_books(request):
 
         messages.success(request, f"CSV processed: {imported_count} imported, {skipped_count} skipped (reason: duplicates). ")
 
+
     books = Book.objects.filter(user=request.user)
+
     return render(request, "manageBooks.html", {"books": books})
 
 

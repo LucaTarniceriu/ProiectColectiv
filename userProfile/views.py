@@ -6,6 +6,7 @@ from userProfile.decorators import user_type_required
 from .models import UserProfile
 from barcodeRec.models import Rating, Book
 import random
+from isbnlib import *
 
 
 @login_required
@@ -49,7 +50,10 @@ def my_ratings_view(request):
 @login_required
 @user_type_required('Librarie')
 def manage_books(request):
-    books = Book.objects.all().order_by('-scanned_at')  # or just '-id'
+
+    books = Book.objects.all().order_by('title')
+
+    # books = Book.objects.all().order_by('-scanned_at')  # or just '-id'
     return render(request, 'userProfile/manageBooks.html', {
         'books': books,
         'random_number': random.randint(0, 7)

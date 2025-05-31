@@ -19,39 +19,43 @@
     <div id="details">
       {% block bookDetails %}
 
-        {% if user.userprofile.display_mode == 'dark' %}
-          <img src="{{ cover }}" alt="Book Cover" style="filter: invert(1);">
-        {% else %}
-          <img src="{{ cover }}" alt="Book Cover" style="filter: invert(0);">
-        {% endif %}
+        <div id="column1">
+          {% if user.userprofile.display_mode == 'dark' %}
+            <img src="{{ cover }}" alt="Book Cover" style="filter: invert(1);">
+          {% else %}
+            <img src="{{ cover }}" alt="Book Cover" style="filter: invert(0);">
+          {% endif %}
+          <ul>
+            {% for key, value in bookData.items %}
+              <li><strong>{{ key }}:</strong> {{ value }}</li>
+            {% endfor %}
+          </ul>
 
-        <ul>
-          {% for key, value in bookData.items %}
-            <li><strong>{{ key }}:</strong> {{ value }}</li>
-          {% endfor %}
-        </ul>
+          <div>
+            <form id="ratingForm" method="post" class="rating-container">
+              {% csrf_token %}
+              <input type="hidden" name="code" value="{{ code }}">
+              <input type="hidden" name="action" value="reviewBook">
+              {{ number_of_ratings }}
+              <div id="stars">
+                {% for i in '12345' %}
+                  <input type="radio" name="rating" id="star{{ i }}" value="{{ i }}">
+                  <label for="star{{ i }}" class="star">&#9733;</label>
+                {% endfor %}
 
-        <div>
-          <form id="ratingForm" method="post" class="rating-container">
-            {% csrf_token %}
-            <input type="hidden" name="code" value="{{ code }}">
-            <input type="hidden" name="action" value="reviewBook">
-            {{ number_of_ratings }}
-            <div id="stars">
-              {% for i in '12345' %}
-                <input type="radio" name="rating" id="star{{ i }}" value="{{ i }}">
-                <label for="star{{ i }}" class="star">&#9733;</label>
-              {% endfor %}
+              </div>
 
-            </div>
-
-            <button type="submit" class="rate-button" id="rate_btn">Rate</button>
-            {{ total_rating }}
-          </form>
-
+              <button type="submit" class="rate-button" id="rate_btn">Rate</button>
+              {{ total_rating }}
+            </form>
+          </div>
         </div>
       {% endblock %}
+
+      <div class="description"> {{ description }} </div>
+
     </div>
+
 
     <div class="button-group">
       {% if not in_library %}
@@ -78,7 +82,7 @@
   <!--      <button class="buttons" type="submit">Add to Wishlist</button>-->
   <!--    </form>-->
 
-      <button class="buttons" id="back_btn" onclick="location.href='/home'">Back</button>
+      <button class="buttons" id="back_btn" onclick="history.back()">Back</button>
     </div>
   </div>
 

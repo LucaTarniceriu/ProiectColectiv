@@ -24,6 +24,7 @@ class Book(models.Model):
     title = models.CharField(max_length=255)
     author = models.CharField(max_length=255, blank=True)
     isbn = models.CharField(max_length=20)
+    cover = models.CharField(max_length=255, default="/static/missingCover.png")
     scanned_at = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):

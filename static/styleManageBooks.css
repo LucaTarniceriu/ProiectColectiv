@@ -1,8 +1,46 @@
+@media only screen and (max-width: 1000px){
+    #searchForm{
+        width: 65vw;
+    }
+
+    #searchInput{
+        font-size: 2rem;
+    }
+}
+@media only screen and (min-width: 1001px){
+
+    #searchForm{
+        width: 45vw;
+    }
+
+    #searchInput{
+        font-size: 1rem;
+    }
+}
+
 body {
-    font-family: 'Segoe UI', sans-serif;
     background-color: #f4f6f900;
     margin: 0;
     padding: 2rem;
+}
+
+#searchForm{
+  background-color: rgba(244, 244, 244, 0.9);
+  border-radius: 10px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+  margin: 1rem auto;
+}
+
+#searchInput{
+  border: none;
+  margin: 1rem auto;
+  text-align: center;
+  width: 100%;
+  background-color: rgba(244, 244, 244, 0);
+}
+
+#searchInput:focus{
+  outline: none;
 }
 
 h2 {

@@ -10,6 +10,7 @@
 <body>
   {% include 'reusable/styleCommon.html' with random_number=random_number %}
   <div class="backgroundPicture"></div>
+
   <h2 style="text-align:center;">Your books</h2>
 
   {% if books %}
@@ -30,6 +31,5 @@
   {% else %}
     <p style="text-align:center;">You haven't added any books yet.</p>
   {% endif %}
-
 </body>
 </html>

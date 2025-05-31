@@ -30,6 +30,37 @@
 
 <style>
 
+  @media only screen and (max-width: 1000px){
+    .nav-left .home-link {
+      font-size: 1.3rem;
+      font-weight: bold;
+      color: #000000;
+      cursor: pointer;
+    }
+
+  .nav-right {
+      font-size: 1.3rem;
+      display: flex;
+      gap: 1.5rem;
+      align-items: center;
+    }
+  }
+  @media only screen and (min-width: 1001px){
+    .nav-left .home-link {
+      font-size: 1.3rem;
+      font-weight: bold;
+      color: #000000;
+      cursor: pointer;
+    }
+
+    .nav-right {
+      font-size: 1.3rem;
+      display: flex;
+      gap: 1.5rem;
+      align-items: center;
+    }
+  }
+
   #switchForm{
     display: flex;
     flex-direction: column;
@@ -48,21 +79,8 @@
     margin: 20px auto;
     border: 1px solid #00000000;
     border-radius: 12px;
-    background-color: rgba(244, 244, 244, 0.5);
+    background-color: rgba(244, 244, 244, 0.6);
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
-  }
-
-  .nav-left .home-link {
-    font-size: 1.3rem;
-    font-weight: bold;
-    color: #000000;
-    cursor: pointer;
-  }
-
-  .nav-right {
-    display: flex;
-    gap: 1.5rem;
-    align-items: center;
   }
 
   .menu_btn {
