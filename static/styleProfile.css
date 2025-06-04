@@ -41,7 +41,7 @@ body {
     }
 
     .username {
-      font-size: 1.5rem;
+      font-size: 1.9rem;
       font-weight: bold;
       color: #000000;
       text-align: center;
@@ -62,7 +62,7 @@ body {
       min-width: 250px;
       text-align: center;
       padding: 1.2rem;
-      font-size: 1.2rem;
+      font-size: 1.6rem;
       border-radius: 10px;
       background-color: #4e59ad;
       color: white;
@@ -86,7 +86,7 @@ body {
     .logout-form button {
       padding: 0.6rem 1.2rem;
       max-width: 300px;
-      font-size: 1rem;
+      font-size: 1.4rem;
       background-color: #e0e0e0;
       color: #000000;
       border: 2px solid #cecece;

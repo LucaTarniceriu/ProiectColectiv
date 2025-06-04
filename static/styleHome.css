@@ -6,7 +6,7 @@ body {
 }
 
 h2 {
-  font-size: 2rem;
+  font-size: 2.4rem;
   color: #333;
   margin-bottom: 1.5rem;
 }
@@ -57,7 +57,7 @@ h2 {
 
     button {
       padding: 0.75rem;
-      font-size: 1rem;
+      font-size: 1.4rem;
       border: 2px solid #4e59ad;
       border-radius: 8px ;
       background-color: #4e59ad;
@@ -107,7 +107,7 @@ h2 {
   color: white;
   border: none;
   border-radius: 8px;
-  font-size: 16px;
+  font-size: 20px;
   cursor: pointer;
   transition: background-color 0.3s ease;
   margin-left: auto;

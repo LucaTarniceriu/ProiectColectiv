@@ -1,6 +1,6 @@
 @media only screen and (max-width: 1000px){
     body{
-        font-size: 4vw;
+        font-size: 4.4vw;
     }
     .rating-card {
         width: 75vw;
@@ -11,12 +11,12 @@
     }
 
     #searchInput{
-        font-size: 2rem;
+        font-size: 2.4rem;
     }
 }
 @media only screen and (min-width: 1001px){
     body{
-        font-size: 1vw;
+        font-size: 1.1vw;
     }
 
     .rating-card {
@@ -28,7 +28,7 @@
     }
 
     #searchInput{
-        font-size: 1rem;
+        font-size: 1.4rem;
     }
 }
 
@@ -69,12 +69,12 @@ body {
     }
 
     .stars {
-      font-size: 1.2rem;
+      font-size: 1.6rem;
       color: #c6b743;
     }
 
     .date {
-      font-size: 1rem;
+      font-size: 1.5rem;
       color: #665;
     }
 
